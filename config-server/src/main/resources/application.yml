@@ -8,5 +8,7 @@ SPRING:
     config:
       server:
         git:
-          uri: https:///github
-          default-label: clase-2-ConfigServer
+          uri: https://github.com/jonathanvictoricadh/202305-Grupo6-Config
+          default-label: main
+          force-pull: true
+          search-paths: configData
