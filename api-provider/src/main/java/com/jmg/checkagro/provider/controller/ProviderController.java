@@ -6,6 +6,8 @@ import com.jmg.checkagro.provider.controller.request.ProviderRequest;
 import com.jmg.checkagro.provider.controller.response.ProviderResponse;
 import com.jmg.checkagro.provider.exception.ProviderException;
 import com.jmg.checkagro.provider.service.ProviderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

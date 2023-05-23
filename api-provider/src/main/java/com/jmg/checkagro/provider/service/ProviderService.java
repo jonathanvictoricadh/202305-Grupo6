@@ -9,6 +9,8 @@ import com.jmg.checkagro.provider.utils.DateTimeUtils;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,11 +19,13 @@ import javax.transaction.Transactional;
 public class ProviderService {
 
     private final ProviderRepository providerRepository;
-    @Value("${urlCheck}")
-    private String urlCheck;
 
-    public ProviderService(ProviderRepository providerRepository) {
+    private final CheckMSClient checkMSClient;
+
+
+    public ProviderService(ProviderRepository providerRepository, CheckMSClient checkMSClient) {
         this.providerRepository = providerRepository;
+        this.checkMSClient = checkMSClient;
     }
 
     @Transactional
@@ -38,10 +42,7 @@ public class ProviderService {
 
     private void registerProviderInMSCheck(Provider entity) {
 
-        CheckMSClient client = Feign.builder()
-                .encoder(new JacksonEncoder())
-                .target(CheckMSClient.class, urlCheck);
-        client.registerProvider(CheckMSClient.DocumentRequest.builder()
+        checkMSClient.registerProvider(CheckMSClient.DocumentRequest.builder()
                 .documentType(entity.getDocumentType())
                 .documentValue(entity.getDocumentNumber())
                 .build());
@@ -49,10 +50,7 @@ public class ProviderService {
 
     private void deleteProviderInMSCheck(Provider entity) {
 
-        CheckMSClient client = Feign.builder()
-                .encoder(new JacksonEncoder())
-                .target(CheckMSClient.class, urlCheck);
-        client.deleteProvider(CheckMSClient.DocumentRequest.builder()
+        checkMSClient.deleteProvider(CheckMSClient.DocumentRequest.builder()
                 .documentType(entity.getDocumentType())
                 .documentValue(entity.getDocumentNumber())
                 .build());

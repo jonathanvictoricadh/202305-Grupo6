@@ -17,12 +17,11 @@ import javax.transaction.Transactional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CheckMSClient checkMSClient;
 
-    @Value("${urlCheck}")
-    private String urlCheck;
-
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, CheckMSClient checkMSClient) {
         this.customerRepository = customerRepository;
+        this.checkMSClient = checkMSClient;
     }
 
     @Transactional
@@ -40,20 +39,14 @@ public class CustomerService {
     }
 
     private void registerCustomerInMSCheck(Customer entity) {
-        CheckMSClient client = Feign.builder()
-                .encoder(new JacksonEncoder())
-                .target(CheckMSClient.class, urlCheck);
-        client.registerCustomer(CheckMSClient.DocumentRequest.builder()
+        checkMSClient.registerCustomer(CheckMSClient.DocumentRequest.builder()
                 .documentType(entity.getDocumentType())
                 .documentValue(entity.getDocumentNumber())
                 .build());
     }
 
     private void deleteCustomerInMSCheck(Customer entity) {
-        CheckMSClient client = Feign.builder()
-                .encoder(new JacksonEncoder())
-                .target(CheckMSClient.class, urlCheck);
-        client.deleteCustomer(CheckMSClient.DocumentRequest.builder()
+        checkMSClient.deleteCustomer(CheckMSClient.DocumentRequest.builder()
                 .documentType(entity.getDocumentType())
                 .documentValue(entity.getDocumentNumber())
                 .build());

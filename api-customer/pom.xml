@@ -82,9 +82,8 @@
 
 		<!-- dependencia principal de Feign -->
 		<dependency>
-			<groupId>io.github.openfeign</groupId>
-			<artifactId>feign-core</artifactId>
-			<version>11.1</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<!-- dependencia de codificación de Jackson -->
 		<dependency>
