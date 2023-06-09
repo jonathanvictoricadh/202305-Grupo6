@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 public class CustomerResponse {
 
-    private Long id;
+    private String id;
     private String documentType;
     private String documentNumber;
     private String businessName;
