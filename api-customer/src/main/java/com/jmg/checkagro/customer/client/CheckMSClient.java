@@ -1,6 +1,4 @@
 package com.jmg.checkagro.customer.client;
-import feign.Headers;
-import feign.RequestLine;
 import lombok.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

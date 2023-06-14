@@ -4,10 +4,13 @@ services:
     image: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: checkAgro-dev
-      MYSQL_USER: usr-checkAgro
-      MYSQL_PASSWORD: pwd-checkAgro
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: 'checkAgro-dev'
+      MYSQL_USER: 'usr-checkAgro'
+      MYSQL_PASSWORD: 'pwd-checkAgro'
+      MYSQL_ROOT_PASSWORD: 'password'
+    networks:
+      - app-network
+
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '3307:3306'
@@ -23,9 +26,16 @@ services:
       MONGO_INITDB_DATABASE: 'customer-dev-mongo'
       MONGO_INITDB_ROOT_USERNAME: 'usr-customer-mongo'
       MONGO_INITDB_ROOT_PASSWORD: 'pwd-customer-mongo'
+    networks:
+      - app-network
+
     ports:
       - 27017:27017
     expose:
       - 27017
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+networks:
+  app-network:
+    driver: bridge
