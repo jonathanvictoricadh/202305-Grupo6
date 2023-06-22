@@ -18,23 +18,31 @@ services:
       # Opens port 3306 on the container
       - '3306'
       # Where our data will be persisted
-  mongo-container:
-    image: mongo
-    container_name: mongo-container
-    restart: on-failure
-    environment:
-      MONGO_INITDB_DATABASE: 'customer-dev-mongo'
-      MONGO_INITDB_ROOT_USERNAME: 'usr-customer-mongo'
-      MONGO_INITDB_ROOT_PASSWORD: 'pwd-customer-mongo'
-    networks:
-      - app-network
 
+  zipkin-server-container:
+    image: openzipkin/zipkin-slim
+    container_name: zipkin-server-container
+    environment:
+    - STORAGE_TYPE=mem
     ports:
-      - 27017:27017
+    - "9411:9411"
     expose:
-      - 27017
-    volumes:
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    - 9411
+    depends_on:
+    - storage-aux-container
+  storage-aux-container:
+    image: busybox:1.31.0
+    container_name: storage-aux-container
+  rabbitmq-container:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-container
+    hostname: localhost
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - 15672
+      - 5672
 
 networks:
   app-network:
